@@ -38,6 +38,8 @@ on property:sys.usb.config=mtp
     write /sys/class/android_usb/android0/bDeviceSubClass 0
     write /sys/class/android_usb/android0/bDeviceProtocol 0
     write /sys/class/android_usb/android0/functions mtp
+    write /sys/module/g_android/parameters/mtp_rx_req_len 131072
+    write /sys/module/g_android/parameters/mtp_tx_reqs 32
     write /sys/class/android_usb/android0/enable 1
     setprop sys.usb.state ${sys.usb.config}
 
@@ -49,6 +51,8 @@ on property:sys.usb.config=mtp,adb
     write /sys/class/android_usb/android0/bDeviceSubClass 0
     write /sys/class/android_usb/android0/bDeviceProtocol 0
     write /sys/class/android_usb/android0/functions mtp,adb
+    write /sys/module/g_android/parameters/mtp_rx_req_len 131072
+    write /sys/module/g_android/parameters/mtp_tx_reqs 32
     write /sys/class/android_usb/android0/enable 1
     start adbd
     setprop sys.usb.state ${sys.usb.config}
@@ -105,12 +109,12 @@ on property:sys.usb.config=ptp,adb
 
 # USB midi configuration
 on property:sys.usb.config=midi
+    stop adbd
     write /sys/class/android_usb/android0/enable 0
     write /sys/class/android_usb/android0/idVendor 18d1
     write /sys/class/android_usb/android0/idProduct 4ee8
     write /sys/class/android_usb/android0/functions ${sys.usb.config}
     write /sys/class/android_usb/android0/enable 1
-    start adbd
     setprop sys.usb.state ${sys.usb.config}
 
 # USB midi configuration, with adb
